@@ -1,0 +1,33 @@
+services:
+  db:
+    image: postgres:16
+    container_name: buscacep_postgres
+    environment:
+      POSTGRES_DB: buscacep_test
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 123456
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    networks:
+      - buscacep_net
+
+  wiremock:
+    image: wiremock/wiremock:3.5.2
+    container_name: buscacep_wiremock
+    ports:
+      - "8081:8080"
+    volumes:
+      - ./wiremock:/home/wiremock
+    depends_on:
+      - db
+    networks:
+      - buscacep_net
+
+volumes:
+  pgdata:
+
+networks:
+  buscacep_net:
+    driver: bridge
