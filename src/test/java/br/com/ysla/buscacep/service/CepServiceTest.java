@@ -46,6 +46,5 @@ class CepServiceTest {
         CepLog logSalvo = logCaptor.getValue();
 
         assertEquals(cep, logSalvo.getCep());
-        // Você pode adicionar mais asserts para os outros campos se desejar
     }
 }

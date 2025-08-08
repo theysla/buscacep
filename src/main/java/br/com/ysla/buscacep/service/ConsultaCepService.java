@@ -19,7 +19,7 @@ public class ConsultaCepService {
     }
 
     public ConsultaCep buscarCep(String cep) {
-    String cepLimpo = cep.trim(); // remove espaços e quebras de linha
+    String cepLimpo = cep.trim(); 
     ConsultaCep consulta = viaCepClient.buscarCep(cepLimpo);
     consulta.setDataConsulta(LocalDateTime.now());
     return repository.save(consulta);

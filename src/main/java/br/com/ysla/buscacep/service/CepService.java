@@ -22,7 +22,6 @@ public class CepService {
     public ConsultaCep buscarCep(String cep) {
         ConsultaCep response = viaCepClient.buscarCep(cep);
 
-        // Salvar log
         CepLog log = new CepLog();
         log.setCep(cep);
         log.setDataConsulta(LocalDateTime.now());

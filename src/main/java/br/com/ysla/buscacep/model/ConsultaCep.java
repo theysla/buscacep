@@ -19,7 +19,6 @@ public class ConsultaCep {
     @Column(name = "data_consulta") 
     private LocalDateTime dataConsulta;
 
-    // Getters
     public Long getId() { return id; }
     public String getCep() { return cep; }
     public String getLogradouro() { return logradouro; }
@@ -28,7 +27,6 @@ public class ConsultaCep {
     public String getUf() { return uf; }
     public LocalDateTime getDataConsulta() { return dataConsulta; }
 
-    // Setters
     public void setId(Long id) { this.id = id; }
     public void setCep(String cep) { this.cep = cep; }
     public void setLogradouro(String logradouro) { this.logradouro = logradouro; }
