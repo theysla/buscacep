@@ -1,37 +1,45 @@
 package br.com.ysla.buscacep.model;
 
 import jakarta.persistence.*;
+import lombok.*;
+
 import java.time.LocalDateTime;
 
+@Getter @Setter
+@NoArgsConstructor @AllArgsConstructor @Builder
 @Entity
+@Table(name = "consulta_cep",
+       indexes = {
+           @Index(name = "idx_consulta_cep_cep", columnList = "cep"),
+           @Index(name = "idx_consulta_cep_data", columnList = "data_consulta")
+       })
 public class ConsultaCep {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(length = 9, nullable = false)
     private String cep;
+
+    @Column(length = 255)
     private String logradouro;
+
+    @Column(length = 120)
     private String bairro;
+
+    @Column(length = 120)
     private String localidade;
+
+    @Column(length = 2)
     private String uf;
 
-    @Column(name = "data_consulta") 
+    @Column(name = "data_consulta", nullable = false, updatable = false)
     private LocalDateTime dataConsulta;
 
-    public Long getId() { return id; }
-    public String getCep() { return cep; }
-    public String getLogradouro() { return logradouro; }
-    public String getBairro() { return bairro; }
-    public String getLocalidade() { return localidade; }
-    public String getUf() { return uf; }
-    public LocalDateTime getDataConsulta() { return dataConsulta; }
-
-    public void setId(Long id) { this.id = id; }
-    public void setCep(String cep) { this.cep = cep; }
-    public void setLogradouro(String logradouro) { this.logradouro = logradouro; }
-    public void setBairro(String bairro) { this.bairro = bairro; }
-    public void setLocalidade(String localidade) { this.localidade = localidade; }
-    public void setUf(String uf) { this.uf = uf; }
-    public void setDataConsulta(LocalDateTime dataConsulta) { this.dataConsulta = dataConsulta; }
+    @PrePersist
+    void prePersist() {
+        if (dataConsulta == null) dataConsulta = LocalDateTime.now();
+        if (cep != null) cep = cep.trim();
+    }
 }

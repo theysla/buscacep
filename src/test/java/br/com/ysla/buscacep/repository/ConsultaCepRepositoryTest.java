@@ -22,18 +22,26 @@ class ConsultaCepRepositoryTest {
 
     @Test
     void deveSalvarEBuscarConsultaCep() {
+        LocalDateTime instanteFixo = LocalDateTime.of(2025, 8, 11, 1, 0, 0);
+
         ConsultaCep consulta = new ConsultaCep();
         consulta.setCep("01001000");
         consulta.setUf("SP");
         consulta.setLocalidade("São Paulo");
-        consulta.setDataConsulta(LocalDateTime.now());
+        consulta.setDataConsulta(instanteFixo);
 
         ConsultaCep salvo = repository.save(consulta);
 
         Optional<ConsultaCep> encontrado = repository.findById(salvo.getId());
-        assertTrue(encontrado.isPresent());
-        assertEquals("SP", encontrado.get().getUf());
-        assertEquals("São Paulo", encontrado.get().getLocalidade());
-        assertEquals("01001000", encontrado.get().getCep());
+        assertTrue(encontrado.isPresent(), "registro não encontrado");
+
+        ConsultaCep e = encontrado.get();
+        assertAll(
+            () -> assertNotNull(salvo.getId(), "id não foi gerado"),
+            () -> assertEquals("01001000", e.getCep()),
+            () -> assertEquals("SP", e.getUf()),
+            () -> assertEquals("São Paulo", e.getLocalidade()),
+            () -> assertEquals(instanteFixo, e.getDataConsulta())
+        );
     }
 }

@@ -11,22 +11,20 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.time.LocalDateTime;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class CepServiceTest {
 
     @Mock
-    private ViaCepClient viaCepClient;
+    ViaCepClient viaCepClient;
 
     @Mock
-    private CepLogRepository cepLogRepository;
+    CepLogRepository cepLogRepository;
 
     @InjectMocks
-    private CepService cepService;
+    CepService cepService;
 
     @Test
     void deveBuscarCepESalvarLog() {
@@ -38,13 +36,21 @@ class CepServiceTest {
 
         ConsultaCep resultado = cepService.buscarCep(cep);
 
+        assertNotNull(resultado);
         assertEquals(cep, resultado.getCep());
-        verify(viaCepClient).buscarCep(cep);
+        verify(viaCepClient, times(1)).buscarCep(cep);
 
         ArgumentCaptor<CepLog> logCaptor = ArgumentCaptor.forClass(CepLog.class);
-        verify(cepLogRepository).save(logCaptor.capture());
-        CepLog logSalvo = logCaptor.getValue();
+        verify(cepLogRepository, times(1)).save(logCaptor.capture());
+        verifyNoMoreInteractions(cepLogRepository);
 
-        assertEquals(cep, logSalvo.getCep());
+        CepLog logSalvo = logCaptor.getValue();
+        assertAll(
+            () -> assertNotNull(logSalvo, "Log não capturado"),
+            () -> assertEquals(cep, logSalvo.getCep(), "CEP do log divergente"),
+            () -> assertNotNull(logSalvo.getDataConsulta(), "dataConsulta não preenchida"),
+            () -> assertNotNull(logSalvo.getResultado(), "resultado não preenchido"),
+            () -> assertFalse(logSalvo.getResultado().isBlank(), "resultado em branco")
+        );
     }
 }

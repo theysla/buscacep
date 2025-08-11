@@ -10,22 +10,23 @@ class ConsultaCepTest {
 
     @Test
     void gettersAndSetters() {
-        ConsultaCep consulta = new ConsultaCep();
-        consulta.setId(1L);
-        consulta.setCep("01001000");
-        consulta.setLogradouro("Praça da Sé");
-        consulta.setBairro("Sé");
-        consulta.setLocalidade("São Paulo");
-        consulta.setUf("SP");
-        LocalDateTime now = LocalDateTime.now();
-        consulta.setDataConsulta(now);
+        ConsultaCep c = new ConsultaCep();
+        c.setId(1L);
+        c.setCep("01001000");
+        c.setLogradouro("Praça da Sé");
+        c.setBairro("Sé");
+        c.setLocalidade("São Paulo");
+        c.setUf("SP");
+        var now = LocalDateTime.now();
+        c.setDataConsulta(now);
 
-        assertEquals(1L, consulta.getId());
-        assertEquals("01001000", consulta.getCep());
-        assertEquals("Praça da Sé", consulta.getLogradouro());
-        assertEquals("Sé", consulta.getBairro());
-        assertEquals("São Paulo", consulta.getLocalidade());
-        assertEquals("SP", consulta.getUf());
-        assertEquals(now, consulta.getDataConsulta());
-    }       
+        assertAll(
+                () -> assertEquals(1L, c.getId()),
+                () -> assertEquals("01001000", c.getCep()),
+                () -> assertEquals("Praça da Sé", c.getLogradouro()),
+                () -> assertEquals("Sé", c.getBairro()),
+                () -> assertEquals("São Paulo", c.getLocalidade()),
+                () -> assertEquals("SP", c.getUf()),
+                () -> assertEquals(now, c.getDataConsulta()));
+    }
 }

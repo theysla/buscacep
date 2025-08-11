@@ -2,33 +2,41 @@ package br.com.ysla.buscacep.model;
 
 import org.junit.jupiter.api.Test;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class CepResponseTest {
 
     @Test
-    void gettersAndSetters() {
-        CepResponse response = new CepResponse();
-        response.setCep("01001000");
-        response.setLogradouro("Praça da Sé");
-        response.setComplemento("lado ímpar");
-        response.setBairro("Sé");
-        response.setLocalidade("São Paulo");
-        response.setUf("SP");
-        response.setIbge("3550308");
-        response.setGia("1004");
-        response.setDdd("11");
-        response.setSiafi("7107");
+    void deveDesserializarRespostaDoViaCep() throws Exception {
+        String json = """
+                  {
+                    "cep":"01001-000",
+                    "logradouro":"Praça da Sé",
+                    "complemento":"lado ímpar",
+                    "bairro":"Sé",
+                    "localidade":"São Paulo",
+                    "uf":"SP",
+                    "ibge":"3550308",
+                    "gia":"1004",
+                    "ddd":"11",
+                    "siafi":"7107"
+                  }
+                """;
 
-        assertEquals("01001000", response.getCep());
-        assertEquals("Praça da Sé", response.getLogradouro());
-        assertEquals("lado ímpar", response.getComplemento());
-        assertEquals("Sé", response.getBairro());
-        assertEquals("São Paulo", response.getLocalidade());
-        assertEquals("SP", response.getUf());
-        assertEquals("3550308", response.getIbge());
-        assertEquals("1004", response.getGia());
-        assertEquals("11", response.getDdd());
-        assertEquals("7107", response.getSiafi());
+        CepResponse r = new ObjectMapper().readValue(json, CepResponse.class);
+
+        assertAll(
+                () -> assertEquals("01001-000", r.getCep()), // ViaCEP vem formatado
+                () -> assertEquals("Praça da Sé", r.getLogradouro()),
+                () -> assertEquals("lado ímpar", r.getComplemento()),
+                () -> assertEquals("Sé", r.getBairro()),
+                () -> assertEquals("São Paulo", r.getLocalidade()),
+                () -> assertEquals("SP", r.getUf()),
+                () -> assertEquals("3550308", r.getIbge()),
+                () -> assertEquals("1004", r.getGia()),
+                () -> assertEquals("11", r.getDdd()),
+                () -> assertEquals("7107", r.getSiafi()));
     }
 }

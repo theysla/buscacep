@@ -14,6 +14,20 @@ A imagem abaixo representa o fluxo completo da aplicação, desde a requisição
 
 ---
 
+## Estrutura do Projeto
+
+```json
+src/main/java/br/com/ysla/buscacep
+ ├── client               # Cliente Feign para ViaCEP
+ ├── controller           # Controllers REST
+ ├── model                # Entidades e DTOs
+ ├── repository           # Interfaces JPA
+ ├── service              # Regras de negócio
+ └── BuscacepApplication  # Classe principal
+ ```
+---
+
+
 ## Tecnologias Utilizadas
 
 - Java 17
@@ -87,6 +101,19 @@ GET /api/consulta/01001-000
   "dataConsulta": "2025-08-07T21:34:12"
 }
 ```
+## Critérios Atendidos
+
+- ✅ Desenho da solução incluído (`./assets/fluxo-consulta-cep.drawio.png`)
+- ✅ Busca de CEP em API externa (ViaCEP)
+- ✅ API mocada (WireMock/Mockoon) para simulação offline
+- ✅ Logs de consultas salvos no banco (PostgreSQL)
+- ✅ Uso de princípios SOLID na arquitetura
+- ✅ Repositório público no GitHub
+- ✅ Docker para subir o banco e mock
+- ✅ Documentação com Swagger
+ 
+--- 
+
 
 **Desenvolvido por**
 Ysla Chaves
